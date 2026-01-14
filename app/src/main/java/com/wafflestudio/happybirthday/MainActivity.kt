@@ -8,17 +8,15 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,15 +26,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val title = getString(R.string.title)  // 단일 문자열
-        val contentList = resources.getStringArray(R.array.content_list).toList()  // 문자열 배열
         setContent {
             HappyBirthdayTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    News(title=title, content=contentList)
+                    CheckContainer()
                 }
             }
         }
@@ -44,75 +40,33 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun News(title: String, content: List<String>, modifier: Modifier = Modifier) {
-    val image = painterResource(R.drawable.bg_compose_background)
-    Column(modifier=modifier) {
-        Image(
-            painter = image,
-            contentDescription = null,
-            modifier = Modifier.fillMaxWidth()
-        )
-        NewsContent(
-            title=title,
-            content=content,
-        )
-    }
-}
-
-@Composable
-fun NewsContent(title: String, content: List<String>, modifier: Modifier = Modifier) {
+fun CheckContainer (modifier: Modifier = Modifier) {
+    val checkImg = painterResource(R.drawable.ic_task_completed)
     Column(
         verticalArrangement = Arrangement.Center,
-        modifier=modifier
-            .fillMaxWidth()
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
     ) {
-        Text(
-            text = title,
-            fontSize = 24.sp,
-            textAlign = TextAlign.Start,
-            modifier = Modifier
-                .padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    top = 16.dp,
-                    bottom = 8.dp
-                )
+        Image(
+            painter=checkImg,
+            contentDescription = "Task Complete"
         )
-        content.forEach {
-            item -> Text(
-                text = item,
-                fontSize = 16.sp,
-                textAlign = TextAlign.Justify,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .fillMaxWidth()
-            )
-        }
-
+        Text(
+            text="All tasks completed",
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(top=24.dp, bottom = 8.dp)
+        )
+        Text(
+            text = "Nice work!",
+            fontSize = 16.sp
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun NewsContentPreview() {
-    val title = stringResource(R.string.title)
-    val context = LocalContext.current
-    val contentList = context.resources.getStringArray(R.array.content_list).toList()
-
+fun CheckPreview() {
     HappyBirthdayTheme {
-        NewsContent(title, contentList)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun NewsPreview() {
-    val title = stringResource(R.string.title)
-    val context = LocalContext.current
-    // TODO: Warning 없이 사용하는 방법?
-    val contentList = context.resources.getStringArray(R.array.content_list).toList()
-
-    HappyBirthdayTheme {
-        News(title, contentList)
+        CheckContainer()
     }
 }
